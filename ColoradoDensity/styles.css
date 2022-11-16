@@ -1,0 +1,42 @@
+
+
+.button rect {
+  
+  fill: #26654F;
+  stroke: none; 
+    
+}
+
+.button rect.active {
+    
+  fill: #2C785E; 
+  stroke: #26654F;
+  stroke-width: 2px;
+
+}
+
+.button text {
+    
+  font: 12px sans-serif;	
+  letter-spacing: 3px;
+  fill: #FFFFFF;
+  pointer-events: none;
+  text-anchor: middle;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+    
+}
+
+div.tooltip {	
+    position: absolute;			
+    text-align: center;			
+    width: 250px;					
+    height: 25px;					
+    padding: 2px;				
+    font: 15px sans-serif;		
+    background: lightsteelblue;	
+    border: 0px;		
+    border-radius: 8px;			
+    pointer-events: none;			
+}
