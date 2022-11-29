@@ -45,19 +45,17 @@ table{
 
 #option {
     position: relative;
-    left: 42vw;
-    bottom: 30vh;
 }
 
 
 #map {
     position: relative;
-    left: 22vw;
+    margin-left: 20vw
 }
 
 #bar {
     position: relative;
-    left: 25vw;
+
 }
 
 /*footer*/
