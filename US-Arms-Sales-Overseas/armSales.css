@@ -45,14 +45,13 @@ table{
 
 #option {
     position: absolute;
-    top: 90vh;
-    left: 80vh;
+
 }
 
 
 #map {
     position: relative;
-    float: right;
+
 }
 
 #bar {
