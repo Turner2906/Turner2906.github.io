@@ -35,6 +35,7 @@ div.tooltip {
       opacity: 0.9; 
       position: absolute;
     }
+
 table{
     background: palegreen; 
     padding: 5px;
@@ -44,31 +45,19 @@ table{
 
 #option {
     position: relative;
-    bottom: 500px;
-    left: 1000px;
+    left: 42vw;
+    bottom: 30vh;
 }
 
-#desc {
-    position: relative;
-    top: -500px;
-    left: 1000px;
-    font-size: 19px;
-}
-
-#instruct {
-    position: relative;
-    left: 1000px;
-    bottom: 500px;
-}
 
 #map {
     position: relative;
+    left: 22vw;
 }
 
 #bar {
     position: relative;
-    top: -500px;
-    left: 00px;
+    left: 25vw;
 }
 
 /*footer*/
