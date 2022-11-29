@@ -6,13 +6,15 @@
   <script src="https://d3js.org/topojson.v2.min.js"></script>
   <script src="https://d3js.org/d3-queue.v3.min.js"></script>
   <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>  
-  <h1> United States Arms Sales </h1>  
+  <h1>United States Arms Sales</h1>  
+  <p align='center'>Map of US exports by TIV(Trend Indiciator Value) in millions. TIV 
+  represents a military's financial capability.
+  </p>
 </head>
 
 <svg width="1200" height="600" id="map"></svg>
 
-<h2 id = "desc">Data measured in Trend Indicator Values(TIV). TIVs are based on the known unit <br> production cost of weapons and represents the transfer of military resources rather<br> than the financial value of the transfer. </h2>
-<h3 id="instruct">Use these buttons to change the decade</h3>
+<h3 id="option">TIV by Decade</h3>
 <div id="option">
         <input
         id="dec0"
@@ -58,7 +60,7 @@
       />
     </div>
 
-<svg width="1200" height="350" id="bar"></svg>
+<svg width="1200" height="350" transform="translate(440,250)" id="bar"></svg>
 <div class="tooltip"></div>
 
 <body>

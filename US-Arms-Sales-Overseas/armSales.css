@@ -45,22 +45,10 @@ table{
 
 #option {
     position: relative;
-    bottom: 500px;
-    left: 1000px;
+    bottom: 400px;
+    left: 800px;
 }
 
-#desc {
-    position: relative;
-    top: -500px;
-    left: 1000px;
-    font-size: 19px;
-}
-
-#instruct {
-    position: relative;
-    left: 1000px;
-    bottom: 500px;
-}
 
 #map {
     position: relative;
