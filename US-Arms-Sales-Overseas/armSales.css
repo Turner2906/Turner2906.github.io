@@ -44,18 +44,20 @@ table{
 }
 
 #option {
-    position: relative;
+    position: absolute;
+    top: 90vh;
+    left: 80vh;
 }
 
 
 #map {
     position: relative;
-    margin-left: 20vw
+    float: right;
 }
 
 #bar {
     position: relative;
-
+    
 }
 
 /*footer*/

@@ -9,10 +9,11 @@
   <h1> United States Arms Sales </h1>
   <p style='font-size:20px;' align='center'>Map of US arms exports by TIV (Trend Indicator Value) in the millions. TIV represents a military's financial capability.</p>
 </head>
+<div style="margin-left:auto; margin-right:1; width:80%">
+<svg width="1200" height="800" id="map"></svg>
+</div>
 
-<svg width="1200" height="600" id="map"></svg>
 
-<h3 id="option">Use these buttons to change the decade</h3>
 <div id="option">
         <input
         id="dec0"
@@ -56,9 +57,14 @@
         value= "2010s"
         2010s
       />
-    </div>
+</div>
+
+
 
 <svg width="1300" height="350" id="bar"></svg>
+
+
+
 <div class="tooltip"></div>
 
 <body>
