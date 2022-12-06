@@ -1,3 +1,8 @@
+html {
+    overflow-x: hidden;
+}
+
+
 h1{
     color: steelblue;
     text-align: center;
