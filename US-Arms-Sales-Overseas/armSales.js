@@ -34,11 +34,30 @@ var fillColor = d3.scaleThreshold()
 var barColors = d3.scaleOrdinal(d3.schemeCategory10);
 var Year = 2010;
 
-var legendXaxis = d3.scaleSqrt()
+// /*
+var legendX = d3.scaleSqrt()
     .domain([0, 15000])
-    .rangeRound([0, 650]);
+    .rangeRound([0, 450]);
 
-drawLegend(legendXaxis);
+var legend = svg.selectAll("rect")
+  .data(fillColor.range().map(function(d) {
+      d = fillColor.invertExtent(d);
+      if (d[0] == null) d[0] = legendX.domain()[0];
+      if (d[1] == null) d[1] = legendX.domain()[1];
+      return d;
+    }))
+  .enter().append("rect")
+    .attr("height", 8)
+    .attr("x", function(d) { return legendX(d[0]); })
+    .attr("width", function(d) { return legendX(d[1]) - legendX(d[0]); })
+    .attr("fill", function(d) { return fillColor(d[0]); });
+
+svg.call(d3.axisBottom(legendX)
+    .tickSize(10)
+    .tickValues(fillColor.domain()))
+    .attr("transform", "translate(" + (margin.left) + ",50)")
+    .select(".domain")
+    .remove();
 // */
 
 //    /\                      |\**/|      
@@ -95,16 +114,8 @@ function ready(error, world, names, tiv) {
             .on("mousemove",showTooltip)
 			.on("mouseover",hoverColorChange)
             .on("mouseout", removeTooltip);
-    svg.append("text")
-    .attr("class", "caption")
-    .attr("x", legendXaxis.range()[0])
-    .attr("y", -5)
-    .attr("fill", "#000")
-    .attr("text-anchor", "start")
-    .attr("font-weight", "bold")
-    .text("TIV Amount");
 
-
+    
     /*
     
     - | | 
@@ -135,7 +146,7 @@ function ready(error, world, names, tiv) {
     var chosen = 7; //Index for the current decade
     var top10 = []; //Empty array for top 10 countries from each decade
     for (var x = 0; x < dec.length; x++) { //Gets top 10 countries from each decade
-        top10.push(decades[x][dec[x]].slice(161, 171));
+        top10.push(decades[x][dec[x]].slice(161, 170)); //we exclude the top value, as it is the USA.
     }
     
     d3.select("#dec0").on("click", update);
@@ -269,29 +280,6 @@ function ready(error, world, names, tiv) {
 //  / == \                     \  /
 //  |/**\|                      \/
 
-function drawLegend(legendX){
-  svg.selectAll("rect")
-  .data(fillColor.range().map(function(d) {
-      d = fillColor.invertExtent(d);
-      if (d[0] == null) d[0] = legendX.domain()[0];
-      if (d[1] == null) d[1] = legendX.domain()[1];
-      return d;
-    }))
-  .enter().append("rect")
-    .attr("height", 8)
-    .attr("x", function(d) {console.log(legendX(d[0]));  return legendX(d[0]); })
-    .attr("width", function(d) {return legendX(d[1]) - legendX(d[0]); })
-    .attr("fill", function(d) { return fillColor(d[0]); });
-
-svg.call(d3.axisBottom(legendX)
-    .tickSize(10)
-    .tickValues(fillColor.domain()))
-    .attr("transform", "translate(" + (margin.left) + ",50)")
-    .style("font-size", "12px")
-    .select(".domain")
-    .remove();
-}
-
 function updateMap(chosen){
         countries.map(function (d) {
         if (chosen === 0) {
@@ -325,14 +313,6 @@ function updateMap(chosen){
         if (chosen === 7) {
             Year = "1950-2010";
             d.current = d.total;
-            legendXaxis.domain([0, 45000]).rangeRound([0, 562.5]);
-            fillColor.domain([40,400,1000,2000,4000,10000,20000,40000]);
-            drawLegend(legendXaxis);
-        }
-        else{
-            legendXaxis.domain([0, 15000]).rangeRound([0, 650]);
-            fillColor.domain([10,100,250,500,1000,2500,5000,10000]);
-            drawLegend(legendXaxis);
         }
         map
             .attr("fill", hoverColorChange)
@@ -382,6 +362,12 @@ function showTooltip(d){
         tooltipText +=
         //Country TIV row
         "<tr><td>Trade Indicator Value: "+
+        d.current+
+        "</tr></td>"
+    }else{
+        tooltipText +=
+        //Country TIV row
+        "<tr><td>Export TIV: "+
         d.current+
         "</tr></td>"
     }
