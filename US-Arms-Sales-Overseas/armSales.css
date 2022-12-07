@@ -49,19 +49,24 @@ table{
 }
 
 #option {
-    position: absolute;
-
+    position: relative;
+    top: -300px;
+    right: -15px;
 }
 
+#instruct {
+    position: relative;
+    top: -300px;
+    right: -15px;
+}
 
 #map {
     position: relative;
-
 }
 
 #bar {
     position: relative;
-    
+    top: -200px;
 }
 
 /*footer*/
@@ -103,4 +108,3 @@ table{
 ul{
 	list-style: none;
 }
-
