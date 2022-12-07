@@ -36,7 +36,7 @@ var Year = 2010;
 
 var legendXaxis = d3.scaleSqrt()
     .domain([0, 15000])
-    .rangeRound([0, 450]);
+    .rangeRound([0, 650]);
 
 drawLegend(legendXaxis);
 // */
@@ -287,7 +287,7 @@ svg.call(d3.axisBottom(legendX)
     .tickSize(10)
     .tickValues(fillColor.domain()))
     .attr("transform", "translate(" + (margin.left) + ",50)")
-    .style("font-size", "9px")
+    .style("font-size", "12px")
     .select(".domain")
     .remove();
 }
@@ -325,12 +325,12 @@ function updateMap(chosen){
         if (chosen === 7) {
             Year = "1950-2010";
             d.current = d.total;
-            legendXaxis.domain([0, 45000]).rangeRound([0, 390]);
-            fillColor.domain([50,400,1000,2000,4000,10000,20000,40000]);
+            legendXaxis.domain([0, 45000]).rangeRound([0, 562.5]);
+            fillColor.domain([40,400,1000,2000,4000,10000,20000,40000]);
             drawLegend(legendXaxis);
         }
         else{
-            legendXaxis.domain([0, 15000]).rangeRound([0, 450]);
+            legendXaxis.domain([0, 15000]).rangeRound([0, 650]);
             fillColor.domain([10,100,250,500,1000,2500,5000,10000]);
             drawLegend(legendXaxis);
         }
