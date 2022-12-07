@@ -163,14 +163,6 @@ function ready(error, world, names, tiv) {
         top10.push(decades[x][dec[x]].slice(160, 170));
     }
     
-    d3.select("#dec0").on("click", update);
-    d3.select("#dec1").on("click", update);
-    d3.select("#dec2").on("click", update);
-    d3.select("#dec3").on("click", update);
-    d3.select("#dec4").on("click", update);
-    d3.select("#dec5").on("click", update);
-    d3.select("#dec6").on("click", update);
-    d3.select("#dec7").on("click", update);
     sliderTime.on('onchange', update);
     update();
     function update() {
