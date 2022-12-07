@@ -34,30 +34,36 @@ var fillColor = d3.scaleThreshold()
 var barColors = d3.scaleOrdinal(d3.schemeCategory10);
 var Year = 2010;
 
-// /*
-var legendX = d3.scaleSqrt()
-    .domain([0, 15000])
-    .rangeRound([0, 450]);
+  var legendXaxis = d3.scaleSqrt()
+                      .domain([0, 15000])
+                      .rangeRound([0, 650]);
 
-var legend = svg.selectAll("rect")
-  .data(fillColor.range().map(function(d) {
-      d = fillColor.invertExtent(d);
-      if (d[0] == null) d[0] = legendX.domain()[0];
-      if (d[1] == null) d[1] = legendX.domain()[1];
-      return d;
-    }))
-  .enter().append("rect")
-    .attr("height", 8)
-    .attr("x", function(d) { return legendX(d[0]); })
-    .attr("width", function(d) { return legendX(d[1]) - legendX(d[0]); })
-    .attr("fill", function(d) { return fillColor(d[0]); });
+  var sliderTime = d3
+    .sliderBottom()
+    .min(1950)
+    .max(2010)
+    .step(10)
+    .width(300)
+    .ticks(6)
+    .tickFormat(d3.format("d"))
+    //.tickFormat(d3.timeFormat('%Y'))
+    //.tickValues(dataTime)
+    .default(2010)
+    .on('onchange', val => {
+      d3.select('#value-time').text((val));
+    });
 
-svg.call(d3.axisBottom(legendX)
-    .tickSize(10)
-    .tickValues(fillColor.domain()))
-    .attr("transform", "translate(" + (margin.left) + ",50)")
-    .select(".domain")
-    .remove();
+  var gTime = d3
+    .select('#slider-time')
+    .append('svg')
+    .attr('width', 800)
+    .attr('height', 100)
+    .append('g')
+    .attr('transform', 'translate(30,30)');
+
+  gTime.call(sliderTime);
+
+drawLegend(legendXaxis);
 // */
 
 //    /\                      |\**/|      
@@ -114,8 +120,16 @@ function ready(error, world, names, tiv) {
             .on("mousemove",showTooltip)
 			.on("mouseover",hoverColorChange)
             .on("mouseout", removeTooltip);
+    svg.append("text")
+    .attr("class", "caption")
+    .attr("x", legendXaxis.range()[0])
+    .attr("y", -5)
+    .attr("fill", "#000")
+    .attr("text-anchor", "start")
+    .attr("font-weight", "bold")
+    .text("TIV Amount");
 
-    
+
     /*
     
     - | | 
@@ -143,10 +157,10 @@ function ready(error, world, names, tiv) {
             return a.tiv - b.tiv;
         })
     }
-    var chosen = 7; //Index for the current decade
+    var chosen = -1; //Index for the current decade
     var top10 = []; //Empty array for top 10 countries from each decade
     for (var x = 0; x < dec.length; x++) { //Gets top 10 countries from each decade
-        top10.push(decades[x][dec[x]].slice(161, 170)); //we exclude the top value, as it is the USA.
+        top10.push(decades[x][dec[x]].slice(161, 171));
     }
     
     d3.select("#dec0").on("click", update);
@@ -157,34 +171,35 @@ function ready(error, world, names, tiv) {
     d3.select("#dec5").on("click", update);
     d3.select("#dec6").on("click", update);
     d3.select("#dec7").on("click", update);
-    
+    sliderTime.on('onchange', update);
     update();
     function update() {
-        if (this.value === "1950s") {
-            chosen = 0;
-        }
-        if (this.value === "1960s") {
-            chosen = 1;
-        }
-        if (this.value === "1970s") {
-            chosen = 2;
-        }
-        if (this.value === "1980s") {
-            chosen = 3;
-        }
-        if (this.value === "1990s") {
-            chosen = 4;
-        }
-        if (this.value === "2000s") {
-            chosen = 5;
-        }
-        if (this.value === "2010s") {
-            chosen = 6;
-        }
-        if (this.value === "1950s-2010s") {
+        if (this.value === "1950s-2010s" || chosen === -1) {
             chosen = 7;
         }
+        else if (this.value === "1950s" || sliderTime.value() === 1950) {
+            chosen = 0;
+        }
+        else if (this.value === "1960s" || sliderTime.value() === 1960) {
+            chosen = 1;
+        }
+        else if (this.value === "1970s" || sliderTime.value() === 1970) {
+            chosen = 2;
+        }
+        else if (this.value === "1980s" || sliderTime.value() === 1980) {
+            chosen = 3;
+        }
+        else if (this.value === "1990s" || sliderTime.value() === 1990) {
+            chosen = 4;
+        }
+        else if (this.value === "2000s" || sliderTime.value() === 2000) {
+            chosen = 5;
+        }
+        else if (this.value === "2010s" || sliderTime.value() === 2010) {
+            chosen = 6;
+        }
         updateMap(chosen);
+        d3.select('p#value-time').text(Year);
         bar.selectAll("rect").remove();
         bar.selectAll("g.myXaxis").remove();
         bar.selectAll("g.myYaxis").remove();
@@ -280,6 +295,29 @@ function ready(error, world, names, tiv) {
 //  / == \                     \  /
 //  |/**\|                      \/
 
+function drawLegend(legendX){
+  svg.selectAll("rect")
+  .data(fillColor.range().map(function(d) {
+      d = fillColor.invertExtent(d);
+      if (d[0] == null) d[0] = legendX.domain()[0];
+      if (d[1] == null) d[1] = legendX.domain()[1];
+      return d;
+    }))
+  .enter().append("rect")
+    .attr("height", 8)
+    .attr("x", function(d) {return legendX(d[0]); })
+    .attr("width", function(d) {return legendX(d[1]) - legendX(d[0]); })
+    .attr("fill", function(d) { return fillColor(d[0]); });
+
+svg.call(d3.axisBottom(legendX)
+    .tickSize(10)
+    .tickValues(fillColor.domain()))
+    .attr("transform", "translate(" + (margin.left) + ",50)")
+    .style("font-size", "12px")
+    .select(".domain")
+    .remove();
+}
+
 function updateMap(chosen){
         countries.map(function (d) {
         if (chosen === 0) {
@@ -313,6 +351,14 @@ function updateMap(chosen){
         if (chosen === 7) {
             Year = "1950-2010";
             d.current = d.total;
+            legendXaxis.domain([0, 45000]).rangeRound([0, 562.5]);
+            fillColor.domain([40,400,1000,2000,4000,10000,20000,40000]);
+            drawLegend(legendXaxis);
+        }
+        else{
+            legendXaxis.domain([0, 15000]).rangeRound([0, 650]);
+            fillColor.domain([10,100,250,500,1000,2500,5000,10000]);
+            drawLegend(legendXaxis);
         }
         map
             .attr("fill", hoverColorChange)
@@ -362,12 +408,6 @@ function showTooltip(d){
         tooltipText +=
         //Country TIV row
         "<tr><td>Trade Indicator Value: "+
-        d.current+
-        "</tr></td>"
-    }else{
-        tooltipText +=
-        //Country TIV row
-        "<tr><td>Export TIV: "+
         d.current+
         "</tr></td>"
     }
