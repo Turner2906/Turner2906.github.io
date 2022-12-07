@@ -53,17 +53,6 @@ table{
     width: 100%;
 }
 
-#option {
-    position: relative;
-    top: -300px;
-    right: -15px;
-}
-
-#instruct {
-    position: relative;
-    top: -300px;
-    right: -15px;
-}
 
 #map {
     position: relative;
