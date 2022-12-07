@@ -41,14 +41,14 @@ var Year = 2010;
   var sliderTime = d3
     .sliderBottom()
     .min(1950)
-    .max(2010)
+    .max(2020)
     .step(10)
     .width(300)
     .ticks(6)
     .tickFormat(d3.format("d"))
     //.tickFormat(d3.timeFormat('%Y'))
     //.tickValues(dataTime)
-    .default(2010)
+    .default(2020)
     .on('onchange', val => {
       d3.select('#value-time').text((val));
     });
@@ -157,7 +157,7 @@ function ready(error, world, names, tiv) {
             return a.tiv - b.tiv;
         })
     }
-    var chosen = -1; //Index for the current decade
+    var chosen = 7; //Index for the current decade
     var top10 = []; //Empty array for top 10 countries from each decade
     for (var x = 0; x < dec.length; x++) { //Gets top 10 countries from each decade
         top10.push(decades[x][dec[x]].slice(161, 171));
@@ -174,29 +174,29 @@ function ready(error, world, names, tiv) {
     sliderTime.on('onchange', update);
     update();
     function update() {
-        if (this.value === "1950s-2010s" || chosen === -1) {
-            chosen = 7;
-        }
-        else if (this.value === "1950s" || sliderTime.value() === 1950) {
+        if (this.value === "1950s" || sliderTime.value() === 1950) {
             chosen = 0;
         }
-        else if (this.value === "1960s" || sliderTime.value() === 1960) {
+        if (this.value === "1960s" || sliderTime.value() === 1960) {
             chosen = 1;
         }
-        else if (this.value === "1970s" || sliderTime.value() === 1970) {
+        if (this.value === "1970s" || sliderTime.value() === 1970) {
             chosen = 2;
         }
-        else if (this.value === "1980s" || sliderTime.value() === 1980) {
+        if (this.value === "1980s" || sliderTime.value() === 1980) {
             chosen = 3;
         }
-        else if (this.value === "1990s" || sliderTime.value() === 1990) {
+        if (this.value === "1990s" || sliderTime.value() === 1990) {
             chosen = 4;
         }
-        else if (this.value === "2000s" || sliderTime.value() === 2000) {
+        if (this.value === "2000s" || sliderTime.value() === 2000) {
             chosen = 5;
         }
-        else if (this.value === "2010s" || sliderTime.value() === 2010) {
+        if (this.value === "2010s" || sliderTime.value() === 2010) {
             chosen = 6;
+        }
+        if (this.value === "1950s-2010s" || sliderTime.value() === 2020) {
+            chosen = 7;
         }
         updateMap(chosen);
         d3.select('p#value-time').text(Year);
