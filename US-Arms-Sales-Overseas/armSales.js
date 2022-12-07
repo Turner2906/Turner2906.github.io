@@ -373,7 +373,7 @@ function hoverColorChange(d){
         d.current = "0"
     }
     if (d.name == "United States of America"){
-        return "lightskyblue";
+        return "lightgreenblue";
     }
     if (d.current == 0){
          d3.select(this).attr("opacity",0.35)
