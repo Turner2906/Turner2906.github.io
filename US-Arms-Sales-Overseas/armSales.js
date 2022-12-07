@@ -160,7 +160,7 @@ function ready(error, world, names, tiv) {
     var chosen = 7; //Index for the current decade
     var top10 = []; //Empty array for top 10 countries from each decade
     for (var x = 0; x < dec.length; x++) { //Gets top 10 countries from each decade
-        top10.push(decades[x][dec[x]].slice(161, 171));
+        top10.push(decades[x][dec[x]].slice(160, 170));
     }
     
     d3.select("#dec0").on("click", update);
@@ -410,6 +410,13 @@ function showTooltip(d){
         "<tr><td>Trade Indicator Value: "+
         d.current+
         "</tr></td>"
+    }
+    else{
+        tooltipText +=
+        //Country TIV row
+        "<tr><td>Total Exported: "+
+        d.current+
+        "</tr></td>"        
     }
     tooltipText += "</table>"
     
