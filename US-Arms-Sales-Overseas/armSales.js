@@ -34,6 +34,41 @@ var fillColor = d3.scaleThreshold()
 var barColors = d3.scaleOrdinal(d3.schemeCategory10);
 var Year = 2010;
 
+// /*
+var legendX = d3.scaleSqrt()
+    .domain([0, 15000])
+    .rangeRound([0, 450]);
+
+var legend = svg.selectAll("rect")
+  .data(fillColor.range().map(function(d) {
+      d = fillColor.invertExtent(d);
+      if (d[0] == null) d[0] = legendX.domain()[0];
+      if (d[1] == null) d[1] = legendX.domain()[1];
+      return d;
+    }))
+  .enter().append("rect")
+    .attr("height", 8)
+    .attr("x", function(d) { return legendX(d[0]); })
+    .attr("width", function(d) { return legendX(d[1]) - legendX(d[0]); })
+    .attr("fill", function(d) { return fillColor(d[0]); });
+
+svg.append("text")
+    .attr("class", "caption")
+    .attr("x", legendX.range()[0])
+    .attr("y", -5)
+    .attr("fill", "#000")
+    .attr("text-anchor", "start")
+    .attr("font-weight", "bold")
+    .text("TIV Amount");
+
+svg.call(d3.axisBottom(legendX)
+    .tickSize(10)
+    .tickValues(fillColor.domain()))
+    .attr("transform", "translate(" + (margin.left) + ",50)")
+    .select(".domain")
+    .remove();
+// */
+
 //    /\                      |\**/|      
 //   /  \                     \ == /
 //   |  |                      |  |
@@ -72,6 +107,7 @@ function ready(error, world, names, tiv) {
             (d.seventies = t.seventies);
             (d.sixties = t.sixties);
             (d.fifties = t.fifties);
+            (d.total = t.total);
           }
         })
         });
@@ -100,8 +136,8 @@ function ready(error, world, names, tiv) {
     */
     
     //console.log(tiv);
-    var dec = ["fifties", "sixties", "seventies", "eighties", "nineties", "twothousands", "twentytens"]; //Each decade represented in tiv data
-    var decades = [{fifties: []}, {sixties: []}, {seventies: []}, {eighties: []}, {nineties: []}, {twothousands: []}, {twentytens: []}]; //Organized dataset
+    var dec = ["fifties", "sixties", "seventies", "eighties", "nineties", "twothousands", "twentytens", "total"]; //Each decade represented in tiv data
+    var decades = [{fifties: []}, {sixties: []}, {seventies: []}, {eighties: []}, {nineties: []}, {twothousands: []}, {twentytens: []} , {total: []}]; //Organized dataset
     tiv.map(function(country) {
         //console.log(country);
         for (var x = 0; x < dec.length; x++) {
@@ -116,7 +152,7 @@ function ready(error, world, names, tiv) {
             return a.tiv - b.tiv;
         })
     }
-    var chosen = 6; //Index for the current decade
+    var chosen = 7; //Index for the current decade
     var top10 = []; //Empty array for top 10 countries from each decade
     for (var x = 0; x < dec.length; x++) { //Gets top 10 countries from each decade
         top10.push(decades[x][dec[x]].slice(161, 171));
@@ -129,6 +165,7 @@ function ready(error, world, names, tiv) {
     d3.select("#dec4").on("click", update);
     d3.select("#dec5").on("click", update);
     d3.select("#dec6").on("click", update);
+    d3.select("#dec7").on("click", update);
     
     update();
     function update() {
@@ -152,6 +189,9 @@ function ready(error, world, names, tiv) {
         }
         if (this.value === "2010s") {
             chosen = 6;
+        }
+        if (this.value === "1950s-2010s") {
+            chosen = 7;
         }
         updateMap(chosen);
         bar.selectAll("rect").remove();
@@ -278,6 +318,10 @@ function updateMap(chosen){
         if (chosen === 6) {
             Year = 2010;
             d.current = d.twentytens;
+        }
+        if (chosen === 7) {
+            Year = "1950-2010";
+            d.current = d.total;
         }
         map
             .attr("fill", hoverColorChange)
