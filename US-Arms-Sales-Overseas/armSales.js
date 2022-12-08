@@ -45,9 +45,12 @@ var Year = 2010;
     .step(10)
     .width(300)
     .ticks(6)
-    .tickFormat(d3.format("d"))
-    //.tickFormat(d3.timeFormat('%Y'))
-    //.tickValues(dataTime)
+    .tickFormat(function(d,i){
+        if (d === 2020){
+            return "1950-2010"
+        }
+        return d;
+    })
     .default(2020)
     .on('onchange', val => {
       d3.select('#value-time').text((val));
