@@ -33,6 +33,23 @@ var fillColor = d3.scaleThreshold()
     .domain([10,100,250,500,1000,2500,5000,10000])
     .range(d3.schemeYlOrRd[9]);
 var barColors = d3.scaleOrdinal(d3.schemeCategory10);
+
+var leg = d3.select("#leg")
+leg.append("circle").attr("cx",200).attr("cy",130).attr("r", 10).style("fill", "green")
+leg.append("circle").attr("cx",200).attr("cy",160).attr("r", 10).style("fill", "black")
+leg.append("circle").attr("cx",200).attr("cy",190).attr("r", 10).style("fill", "goldenrod")
+leg.append("circle").attr("cx",200).attr("cy",220).attr("r", 10).style("fill", "royalblue")
+leg.append("circle").attr("cx",200).attr("cy",250).attr("r", 10).style("fill", "gold")
+leg.append("circle").attr("cx",200).attr("cy",280).attr("r", 10).style("fill", "red")
+leg.append("circle").attr("cx",200).attr("cy",310).attr("r", 10).style("fill", "purple")
+leg.append("text").attr("x", 220).attr("y", 130).text("North America").style("font-size", "15px").attr("alignment-baseline","middle")
+leg.append("text").attr("x", 220).attr("y", 160).text("South America").style("font-size", "15px").attr("alignment-baseline","middle")
+leg.append("text").attr("x", 220).attr("y", 190).text("Africa").style("font-size", "15px").attr("alignment-baseline","middle")
+leg.append("text").attr("x", 220).attr("y", 220).text("Europe").style("font-size", "15px").attr("alignment-baseline","middle")
+leg.append("text").attr("x", 220).attr("y", 250).text("Asia").style("font-size", "15px").attr("alignment-baseline","middle")
+leg.append("text").attr("x", 220).attr("y", 280).text("Middle East").style("font-size", "15px").attr("alignment-baseline","middle")
+leg.append("text").attr("x", 220).attr("y", 310).text("Oceania").style("font-size", "15px").attr("alignment-baseline","middle")
+
 var Year = 2010;
 
   var legendXaxis = d3.scaleSqrt()
