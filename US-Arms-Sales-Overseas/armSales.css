@@ -77,6 +77,10 @@ table{
     left: -70px;
 }
 
+#leg {
+    position: relative;
+}
+
 #slider {
     position: relative;
 }
