@@ -1,13 +1,18 @@
 var margin = {top: 10, right: 10, bottom: 100, left: 40};
+
 var width = 1100 - margin.left - margin.right;
+
 var height = 500 - margin.top - margin.bottom;
+
 var projection = d3.geoNaturalEarth1()
                    .center([0, 15]) 
                    .rotate([-9,0])
                    .scale([1300/(2*Math.PI)]) 
                    .translate([450,300]);
+
 var path = d3.geoPath()
              .projection(projection);
+
 var svg = d3.select("svg")
             .classed("svg-container", true)
             .attr("preserveAspectRatio", "xMinYMin meet")
@@ -16,6 +21,7 @@ var svg = d3.select("svg")
             .append("g")
             .attr("width", width)
             .attr("height", height);
+
 var bar = d3.select("#bar")
             .classed("svg-container", true)
             .attr("preserveAspectRatio", "xMinYMin meet")
@@ -26,12 +32,13 @@ var bar = d3.select("#bar")
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-var tooltip = d3.select("div.tooltip");
+
 var tooltip = d3.select("div.tooltip");
 
 var fillColor = d3.scaleThreshold()
-    .domain([10,100,250,500,1000,2500,5000,10000])
-    .range(d3.schemeYlOrRd[9]);
+                  .domain([10,100,250,500,1000,2500,5000,10000])
+                  .range(d3.schemeYlOrRd[9]);
+
 var barColors = d3.scaleOrdinal(d3.schemeCategory10);
 
 var leg = d3.select("#leg")
@@ -50,39 +57,41 @@ leg.append("text").attr("x", 220).attr("y", 250).text("Asia").style("font-size",
 leg.append("text").attr("x", 220).attr("y", 280).text("Middle East").style("font-size", "15px").attr("alignment-baseline","middle")
 leg.append("text").attr("x", 220).attr("y", 310).text("Oceania").style("font-size", "15px").attr("alignment-baseline","middle")
 
+
+
+
+
 var Year = 2010;
 
-  var legendXaxis = d3.scaleSqrt()
-                      .domain([0, 15000])
-                      .rangeRound([0, 650]);
+var legendXaxis = d3.scaleSqrt()
+                    .domain([0, 15000])
+                    .rangeRound([0, 650]);
 
-  var sliderTime = d3
-    .sliderBottom()
-    .min(1950)
-    .max(2020)
-    .step(10)
-    .width(600)
-    .ticks(6)
-    .tickFormat(function(d,i){
-        if (d === 2020){
-            return "1950-2010"
-        }
-        return d;
-    })
-    .default(2020)
-    .on('onchange', val => {
-      d3.select('#value-time').text((val));
-    });
+var sliderTime = d3.sliderBottom()
+                   .min(1950)
+                   .max(2020)
+                   .step(10)
+                   .width(600)
+                   .ticks(6)
+                   .default(2020)
+                   .tickFormat(function(d,i){
+                     if (d === 2020){
+                       return "1950-2010"
+                     }
+                     return d;
+                   })
+                   .on('onchange', val => {
+                     d3.select('#value-time').text((val));
+                   });
 
-  var gTime = d3
-    .select('#slider-time')
-    .append('svg')
-    .attr('width', 800)
-    .attr('height', 100)
-    .append('g')
-    .attr('transform', 'translate(30,30)');
+var gTime = d3.select('#slider-time')
+              .append('svg')
+              .attr('width', 800)
+              .attr('height', 100)
+              .append('g')
+              .attr('transform', 'translate(30,30)');
 
-  gTime.call(sliderTime);
+gTime.call(sliderTime);
 
 drawLegend(legendXaxis);
 // */
@@ -316,6 +325,8 @@ function ready(error, world, names, tiv) {
             return barColors(d.country);
         });
     
+
+
 };
 
 //    /\                      |\**/|      
