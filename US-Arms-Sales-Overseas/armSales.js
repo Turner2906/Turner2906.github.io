@@ -186,7 +186,8 @@ function ready(error, world, names, tiv) {
             chosen = 7;
         }
         updateMap(chosen);
-        d3.select('p#value-time').text(Year);
+        d3.select('p#value-time').text("Current Time Period: "+Year +"s");
+        d3.select('p#topTen').text("Top Ten Buyers of US Arms during "+ Year +"s");
         bar.selectAll("rect").remove();
         bar.selectAll("g.myXaxis").remove();
         bar.selectAll("g.myYaxis").remove();
