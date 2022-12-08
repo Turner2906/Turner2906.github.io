@@ -58,6 +58,7 @@ div.tooltip {
 
 div.row-align-items-center{
     position: relative;
+    left: -150px;
 }
 
 table{
@@ -73,6 +74,7 @@ table{
 
 #bar {
     position: relative;
+    left: -70px;
 }
 
 #slider {
@@ -113,7 +115,7 @@ table{
 
 .footer-col h4{
 	font-size: 18px;
-	color: #ffffff;
+	color: royalblue;
 	text-transform: capitalize;
 	margin-bottom: 20px;
 	font-weight: 500;

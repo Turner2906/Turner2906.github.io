@@ -1,5 +1,5 @@
 var margin = {top: 10, right: 10, bottom: 100, left: 40};
-var width = 960 - margin.left - margin.right;
+var width = 1100 - margin.left - margin.right;
 var height = 500 - margin.top - margin.bottom;
 var projection = d3.geoNaturalEarth1()
                    .center([0, 15]) 
@@ -9,29 +9,24 @@ var projection = d3.geoNaturalEarth1()
 var path = d3.geoPath()
              .projection(projection);
 var svg = d3.select("svg")
-            //.classed("svg-container", true)
-            //.attr("preserveAspectRatio", "xMinYMin meet")
-            //.attr("viewBox", "0 0 960 800")
-            //.classed("svg-content-responsive", true)
+            .classed("svg-container", true)
+            .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("viewBox", "0 0 960 800")
+            .classed("svg-content-responsive", true)
             .append("g")
             .attr("width", width)
             .attr("height", height);
 var bar = d3.select("#bar")
-            //.classed("svg-container", true)
-            //.attr("preserveAspectRatio", "xMinYMin meet")
-            //.attr("viewBox", "0 0 960 500")
-            //.classed("svg-content-responsive", true)
+            .classed("svg-container", true)
+            .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("viewBox", "0 0 960 500")
+            .classed("svg-content-responsive", true)
             .append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-var leg = d3.select("#barlegend")
-            .append("svg")
-            .attr("width", width)
-            .attr("height", 100)
-            .append("g");
-
+var tooltip = d3.select("div.tooltip");
 var tooltip = d3.select("div.tooltip");
 
 var fillColor = d3.scaleThreshold()
@@ -49,7 +44,7 @@ var Year = 2010;
     .min(1950)
     .max(2020)
     .step(10)
-    .width(300)
+    .width(600)
     .ticks(6)
     .tickFormat(function(d,i){
         if (d === 2020){
@@ -149,42 +144,6 @@ function ready(error, world, names, tiv) {
     i i i i i i i i i
     */
     
-    function getColor(name) {
-            var region;
-            for (var x = 0; x < names.length; x++) {
-                if (names[x].name === name) {
-                    region = names[x].region;
-                }
-            }
-            //console.log(region);
-            return getRegionColor(region);
-        }
-    
-    // LEGEND -------------------------
-    /*var regions = ["Asia", "North America", "South America", "Africa", "Europe", "Oceania", "Middle East"];
-    var size = 40;
-    var legx = d3.scaleBand() //x axis
-        .range([0,100])
-        .domain(regions.map(function(d) { return d; }))
-        .padding(0.2);
-    
-    leg.append("g")
-        .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(legx))
-        .selectAll("text")
-            .attr("font-size" , "13px")
-            .style("text-anchor", "end");
-    leg.selectAll("rect")
-        .data(regions)
-        .enter()
-        .append("rect")
-        .attr("x",400)
-        .attr("y", 50)
-        .attr("height", size)
-        .attr("width", size)
-        .style("fill", function(d) {return getColor(d)[0]})*/
-    // END OF LEGEND -----------------
-    
     //console.log(tiv);
     var dec = ["fifties", "sixties", "seventies", "eighties", "nineties", "twothousands", "twentytens", "total"]; //Each decade represented in tiv data
     var decades = [{fifties: []}, {sixties: []}, {seventies: []}, {eighties: []}, {nineties: []}, {twothousands: []}, {twentytens: []} , {total: []}]; //Organized dataset
@@ -205,7 +164,7 @@ function ready(error, world, names, tiv) {
     var chosen = 7; //Index for the current decade
     var top10 = []; //Empty array for top 10 countries from each decade
     for (var x = 0; x < dec.length; x++) { //Gets top 10 countries from each decade
-        top10.push(decades[x][dec[x]].slice(160, 170));
+        top10.push(decades[x][dec[x]].slice(159, 169));
     }
     
     sliderTime.on('onchange', update);
@@ -236,7 +195,8 @@ function ready(error, world, names, tiv) {
             chosen = 7;
         }
         updateMap(chosen);
-        d3.select('p#value-time').text(Year);
+        d3.select('p#value-time').text("Current Time Period: "+Year +"s");
+        d3.select('p#topTen').text("Top Ten Buyers of US Arms during "+ Year +"s");
         bar.selectAll("rect").remove();
         bar.selectAll("g.myXaxis").remove();
         bar.selectAll("g.myYaxis").remove();
@@ -268,7 +228,17 @@ function ready(error, world, names, tiv) {
             .attr("class", "myYaxis")
             .call(d3.axisLeft(y));
 
-        var col = getColor("Afghanistan");
+        function getColor(name) {
+            var region;
+            for (var x = 0; x < names.length; x++) {
+                if (names[x].name === name) {
+                    region = names[x].region;
+                }
+            }
+            //console.log(region);
+            return getRegionColor(region);
+        }
+        //var col = getColor("Afghanistan");
         //console.log(col);
         
             bar.selectAll("rect")
@@ -280,11 +250,52 @@ function ready(error, world, names, tiv) {
             .attr("width", x.bandwidth())
             .attr("height", function(d) { return height - y(d.tiv); })
             .style("fill", function (d) {
-                return getColor(d.country)[0];
+                return getColor(d.country)[2];
             })
             .on("mousemove",showTooltipBar)
             .on("mouseout", function(d) {return tooltip.classed("hidden", true);});
         }
+    //console.log(decades);
+    //console.log(top10);
+    var x = d3.scaleBand() //x axis
+        .range([0,width])
+        .domain(top10[chosen].map(function(decade) {
+            return decade.country;
+        }))
+        .padding(0.2);
+
+    bar.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .attr("class", "myXaxis")
+        .call(d3.axisBottom(x))
+        .selectAll("text")
+            .attr("transform", "translate(-10,0)rotate(-45)")
+            .style("text-anchor", "end")
+            .attr("font-size" , "13px");
+    topval = top10[chosen].map(function (country) { 
+        return parseInt(country.tiv);    
+    });
+    //console.log(topval);
+    var y = d3.scaleLinear()
+        .domain([0, Math.max(...topval)])
+        .range([height, 0])
+    bar.append("g")
+        .attr("class", "myYaxis")
+        .call(d3.axisLeft(y));
+    
+    //console.log(top10[chosen]);
+    
+    bar.selectAll("rect")
+        .data(top10[chosen])
+        .enter()
+        .append("rect")
+        .attr("x", function(d) { return x(d.country); })
+        .attr("y", function(d) { return y(parseInt(d.tiv)); })
+        .attr("width", x.bandwidth())
+        .attr("height", function(d) { return height - y(d.tiv); })
+        .style("fill", function (d) {
+            return barColors(d.country);
+        });
     
 };
 
@@ -461,25 +472,25 @@ function removeTooltip(d){
 function getRegionColor (countryRegion){
     switch (countryRegion) {
         case "North America":
-            return ["silver","slategray"]
+            return ["paleGreen","lightGreen", "green"]
             break;
         case "South America":
-            return ["paleGreen","lightGreen"]
+            return ["silver","slategray", "black"]
             break;
         case "Africa":
-            return ["yellow","gold"]
+            return ["palegoldenrod","goldenrod", "goldenrod"]
             break;
         case "Europe":
-            return ["paleturquoise","lightcyan"]
+            return ["lightskyblue","royalblue", "royalblue"]
             break;
         case "Asia":
-            return ["palegoldenrod","goldenrod"]
+            return ["yellow","gold","gold"]
             break;
         case "Middle East":
-            return ["lightpink","indianred"]
+            return ["lightpink","indianred", "red"]
             break;
         case "Oceania":
-            return ["violet","hotpink"]
+            return ["violet","hotpink","purple"]
             break;
         default:
             return ["white","black"]
