@@ -9,15 +9,24 @@ var projection = d3.geoNaturalEarth1()
 var path = d3.geoPath()
              .projection(projection);
 var svg = d3.select("svg")
+            .classed("svg-container", true)
+            .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("viewBox", "0 0 960 800")
+            .classed("svg-content-responsive", true)
             .append("g")
             .attr("width", width)
             .attr("height", height);
 var bar = d3.select("#bar")
+            .classed("svg-container", true)
+            .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("viewBox", "0 0 960 500")
+            .classed("svg-content-responsive", true)
             .append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+var tooltip = d3.select("div.tooltip");
 var tooltip = d3.select("div.tooltip");
 
 var fillColor = d3.scaleThreshold()
