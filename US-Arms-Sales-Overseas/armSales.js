@@ -26,6 +26,12 @@ var bar = d3.select("#bar")
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+var leg = d3.select("#barlegend")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", 100)
+            .append("g");
+
 var tooltip = d3.select("div.tooltip");
 
 var fillColor = d3.scaleThreshold()
@@ -143,6 +149,42 @@ function ready(error, world, names, tiv) {
     i i i i i i i i i
     */
     
+    function getColor(name) {
+            var region;
+            for (var x = 0; x < names.length; x++) {
+                if (names[x].name === name) {
+                    region = names[x].region;
+                }
+            }
+            //console.log(region);
+            return getRegionColor(region);
+        }
+    
+    // LEGEND -------------------------
+    var regions = ["Asia", "North America", "South America", "Africa", "Europe", "Oceania", "Middle East"];
+    var size = 40;
+    var legx = d3.scaleBand() //x axis
+        .range([0,100])
+        .domain(regions.map(function(d) { return d; }))
+        .padding(0.2);
+    
+    leg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(legx))
+        .selectAll("text")
+            .attr("font-size" , "13px")
+            .style("text-anchor", "end");
+    leg.selectAll("rect")
+        .data(regions)
+        .enter()
+        .append("rect")
+        .attr("x",400)
+        .attr("y", 50)
+        .attr("height", size)
+        .attr("width", size)
+        .style("fill", function(d) {return getColor(d)[0]})
+    // END OF LEGEND -----------------
+    
     //console.log(tiv);
     var dec = ["fifties", "sixties", "seventies", "eighties", "nineties", "twothousands", "twentytens", "total"]; //Each decade represented in tiv data
     var decades = [{fifties: []}, {sixties: []}, {seventies: []}, {eighties: []}, {nineties: []}, {twothousands: []}, {twentytens: []} , {total: []}]; //Organized dataset
@@ -226,16 +268,6 @@ function ready(error, world, names, tiv) {
             .attr("class", "myYaxis")
             .call(d3.axisLeft(y));
 
-        function getColor(name) {
-            var region;
-            for (var x = 0; x < names.length; x++) {
-                if (names[x].name === name) {
-                    region = names[x].region;
-                }
-            }
-            //console.log(region);
-            return getRegionColor(region);
-        }
         var col = getColor("Afghanistan");
         //console.log(col);
         
@@ -253,47 +285,6 @@ function ready(error, world, names, tiv) {
             .on("mousemove",showTooltipBar)
             .on("mouseout", function(d) {return tooltip.classed("hidden", true);});
         }
-    //console.log(decades);
-    //console.log(top10);
-    var x = d3.scaleBand() //x axis
-        .range([0,width])
-        .domain(top10[chosen].map(function(decade) {
-            return decade.country;
-        }))
-        .padding(0.2);
-
-    bar.append("g")
-        .attr("transform", "translate(0," + height + ")")
-        .attr("class", "myXaxis")
-        .call(d3.axisBottom(x))
-        .selectAll("text")
-            .attr("transform", "translate(-10,0)rotate(-45)")
-            .style("text-anchor", "end")
-            .attr("font-size" , "13px");
-    topval = top10[chosen].map(function (country) { 
-        return parseInt(country.tiv);    
-    });
-    //console.log(topval);
-    var y = d3.scaleLinear()
-        .domain([0, Math.max(...topval)])
-        .range([height, 0])
-    bar.append("g")
-        .attr("class", "myYaxis")
-        .call(d3.axisLeft(y));
-    
-    //console.log(top10[chosen]);
-    
-    bar.selectAll("rect")
-        .data(top10[chosen])
-        .enter()
-        .append("rect")
-        .attr("x", function(d) { return x(d.country); })
-        .attr("y", function(d) { return y(parseInt(d.tiv)); })
-        .attr("width", x.bandwidth())
-        .attr("height", function(d) { return height - y(d.tiv); })
-        .style("fill", function (d) {
-            return barColors(d.country);
-        });
     
 };
 
