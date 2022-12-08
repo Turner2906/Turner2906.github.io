@@ -31,7 +31,6 @@ div.tooltip {
 
 div.row-align-items-center{
     position: relative;
-    style="transform: translate(38vw, 0);"
 }
 
 table{
@@ -43,12 +42,10 @@ table{
 
 #map {
     position: relative;
-    transform: translate(20vw, 0);
 }
 
 #bar {
     position: relative;
-    transform: translate(20vw, 0);
 }
 
 #slider {
@@ -73,7 +70,7 @@ table{
 
 .footer{
 	background-color: #ADD8E6;
-    padding: 2rem;
+    	padding: 2rem;
 
 }
 
