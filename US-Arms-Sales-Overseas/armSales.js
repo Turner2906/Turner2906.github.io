@@ -202,7 +202,8 @@ function ready(error, world, names, tiv) {
             return decade.country;
         }))
         .padding(0.2);
-
+        
+        
         bar.append("g")
             .attr("transform", "translate(0," + height + ")")
             .attr("class", "myXaxis")
@@ -222,6 +223,19 @@ function ready(error, world, names, tiv) {
             .attr("class", "myYaxis")
             .call(d3.axisLeft(y));
 
+        function getColor(name) {
+            var region;
+            for (var x = 0; x < names.length; x++) {
+                if (names[x].name === name) {
+                    region = names[x].region;
+                }
+            }
+            //console.log(region);
+            return getRegionColor(region);
+        }
+        var col = getColor("Afghanistan");
+        //console.log(col);
+        
             bar.selectAll("rect")
             .data(top10[chosen])
             .enter()
@@ -231,7 +245,7 @@ function ready(error, world, names, tiv) {
             .attr("width", x.bandwidth())
             .attr("height", function(d) { return height - y(d.tiv); })
             .style("fill", function (d) {
-                return barColors(d.country);
+                return getColor(d.country)[0];
             })
             .on("mousemove",showTooltipBar)
             .on("mouseout", function(d) {return tooltip.classed("hidden", true);});
